@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">定投策略</string>
+
+    <string name="add_new_foundation">添加新基金</string>
+    <string name="update_range_after_buy">购买后修改所有区间</string>
+
+    <string name="please_input_foundation_info">请输入基金信息</string>
+    <string name="foundation_code">基金代码</string>
+    <string name="range_min">相对低位价格</string>
+    <string name="range_max">相对高位价格</string>
+
+    <string name="confirm">确认</string>
+</resources>
