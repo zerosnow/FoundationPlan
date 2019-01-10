@@ -42,35 +42,10 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
             android:textSize="18sp"
-            android:text="@string/range_min"/>
+            android:text="@string/base_line"/>
 
         <EditText
-            android:id="@+id/et_range_min"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:textSize="16sp"
-            android:textColor="@color/colorGray"
-            android:inputType="numberDecimal"
-            tools:ignore="Autofill,LabelFor" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorBlack"
-            android:textSize="18sp"
-            android:text="@string/range_max"/>
-
-        <EditText
-            android:id="@+id/et_range_max"
+            android:id="@+id/et_base_line"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"

@@ -1,7 +1,6 @@
 package com.example.archerlei.foundationplan.main.presenter
 
 import android.annotation.SuppressLint
-import android.widget.Toast
 import com.android.volley.Response
 import com.example.archerlei.foundationplan.base.Global
 import com.example.archerlei.foundationplan.base.Utf8StringRequest
@@ -21,7 +20,7 @@ import kotlin.collections.ArrayList
  */
 class FoundationPlanPresenter(private val view: IFoundationPlanView) {
     companion object {
-        private const val DEFAULT_WEEK_RMB = 1000
+        private const val DEFAULT_WEEK_RMB = 500
     }
 
     private val mList = ArrayList<FoundationData>()
@@ -31,12 +30,11 @@ class FoundationPlanPresenter(private val view: IFoundationPlanView) {
 
     }
 
-    fun addData(code: String, rangeMin: Float, rangeMax: Float) {
+    fun addData(code: String, baseLine: Float) {
         if (mList.find { it.id == code } != null) return
         val foundationData = FoundationData()
         foundationData.id = code
-        foundationData.rangeMin = rangeMin
-        foundationData.rangeMax = rangeMax
+        foundationData.baseLine = baseLine
         mList.add(foundationData)
         writeToDisk()
         requestData(code)
@@ -55,34 +53,9 @@ class FoundationPlanPresenter(private val view: IFoundationPlanView) {
 
     }
 
-    fun updateRange() {
-        if (waitCount.get() != 0) {
-            Toast.makeText(view.getActivity(), "数据未更新，请稍后再点击~", Toast.LENGTH_LONG).show()
-            return
-        }
-        mList.forEach {
-            when(it.recommendNum) {
-                0 -> {
-                    val up = (it.rangeMax - it.rangeMin) / 2
-                    it.rangeMin += up
-                    it.rangeMax += up
-                }
-                2 -> {
-                    val down = (it.rangeMax - it.rangeMin) / 2
-                    it.rangeMin -= down
-                    it.rangeMax -= down
-                }
-            }
-        }
-        calculateAndUpdateUI()
-    }
-
     fun updateRange(up: Boolean, position: Int) {
         mList.getOrNull(position)?.let {
-            var change = (it.rangeMax - it.rangeMin) / 2
-            if (!up) change = -change
-            it.rangeMin += change
-            it.rangeMax += change
+            it.baseLine += if (up) 0.01f else -0.01f
         }
         calculateAndUpdateUI()
     }
@@ -116,11 +89,6 @@ class FoundationPlanPresenter(private val view: IFoundationPlanView) {
                 if (priceTime > it.priceTime) {
                     it.curPrice = price
                     it.priceTime = priceTime
-                    it.recommendNum = when {
-                        it.curPrice < it.rangeMin -> 2
-                        it.curPrice > it.rangeMax -> 0
-                        else -> 1
-                    }
                 }
                 subAndTryUpdateUI()
             }
@@ -168,19 +136,8 @@ class FoundationPlanPresenter(private val view: IFoundationPlanView) {
     }
 
     private fun calculateAndUpdateUI() {
-        var count = 0
         mList.forEach {
-            it.recommendNum = when {
-                it.curPrice < it.rangeMin -> 2
-                it.curPrice > it.rangeMax -> 0
-                else -> 1
-            }
-            count += it.recommendNum
-        }
-        if (count != 0) {
-            for (data in mList) {
-                data.recommendRmb = data.recommendNum * DEFAULT_WEEK_RMB / count
-            }
+            it.offsetPercent = (it.curPrice - it.baseLine) / it.baseLine * 100
         }
         view.updateList(mList)
         writeToDisk()

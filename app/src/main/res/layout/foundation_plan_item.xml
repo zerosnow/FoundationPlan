@@ -14,7 +14,7 @@
             android:textColor="@color/colorBlack"/>
 
     <TextView
-            android:id="@+id/foundation_range"
+            android:id="@+id/foundation_base_line"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/foundation_name"
@@ -34,7 +34,7 @@
             android:textColor="@color/colorAccent" />
 
     <TextView
-            android:id="@+id/foundation_recommend"
+            android:id="@+id/foundation_offset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/foundation_price"

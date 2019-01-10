@@ -13,10 +13,8 @@ import java.io.Serializable
 open class FoundationData : Serializable{
     var id = DEFAULT_STRING
     var name = DEFAULT_STRING
-    var rangeMin = DEFAULT_FLOAT
-    var rangeMax = DEFAULT_FLOAT
+    var baseLine = DEFAULT_FLOAT
     var curPrice = DEFAULT_FLOAT
     var priceTime = DEFAULT_LONG
-    var recommendNum = DEFAULT_INT
-    var recommendRmb = DEFAULT_INT
+    var offsetPercent = DEFAULT_FLOAT
 }

@@ -22,14 +22,13 @@ class AddMoreFoundationDialog(context: Context, private val presenter: Foundatio
         findViewById<Button>(R.id.add_confirm).setOnClickListener {
             try {
                 val code = findViewById<EditText>(R.id.et_foundation_code).text.toString()
-                val rangeMin = findViewById<EditText>(R.id.et_range_min).text.toString().toFloat()
-                val rangeMax = findViewById<EditText>(R.id.et_range_max).text.toString().toFloat()
+                val baseLine = findViewById<EditText>(R.id.et_base_line).text.toString().toFloat()
 
                 if (code.length < 6) {
                     Toast.makeText(context, "基金代码长度必须为6位", Toast.LENGTH_LONG).show()
                     return@setOnClickListener
                 }
-                presenter.addData(code, rangeMin, rangeMax)
+                presenter.addData(code, baseLine)
                 dismiss()
             } catch (e: Exception) {
                 return@setOnClickListener

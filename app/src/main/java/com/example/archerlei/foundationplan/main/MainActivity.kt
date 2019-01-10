@@ -87,10 +87,6 @@ class MainActivity : Activity() {
             dialog.setCancelable(true)
             dialog.show()
         }
-
-        findViewById<TextView>(R.id.update_range_after_buy).setOnClickListener {
-            mFoundationPlanPresenter.updateRange()
-        }
     }
 
     private val mFoundationPlanView = object :IFoundationPlanView {

@@ -8,6 +8,7 @@
     <string name="foundation_code">基金代码</string>
     <string name="range_min">相对低位价格</string>
     <string name="range_max">相对高位价格</string>
+    <string name="base_line">基线价格</string>
 
     <string name="confirm">确认</string>
 </resources>
