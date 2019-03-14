@@ -50,7 +50,7 @@ class FoundationPlanAdapter(val context: Context): RecyclerView.Adapter<Foundati
         fun setData(position: Int) {
             val item = mList.getOrNull(position)?:return
             name.text = item.name
-            baseLine.text = "基准价：${mDefaultDecimalFormat3.format(item.baseLine)}"
+            baseLine.text = "基准价：${mDefaultDecimalFormat3.format(item.baseLine)}(建议购买${getBuyNum(item.offsetPercent)}元)"
             price.text = item.curPrice.toString()
             offset.text = "${mDefaultDecimalFormat2.format(item.offsetPercent)}%"
             val textColor = when {
@@ -59,6 +59,21 @@ class FoundationPlanAdapter(val context: Context): RecyclerView.Adapter<Foundati
                 else -> context.resources.getColor(R.color.colorGreen)
             }
             offset.setTextColor(textColor)
+        }
+
+        private fun getBuyNum(offsetPercent: Float): Int {
+            return when  {
+                offsetPercent < -20f -> 2000
+                offsetPercent < -10f -> 1500
+                offsetPercent < -5f -> 1200
+                offsetPercent < 0f -> 900
+                offsetPercent < 5f -> 700
+                offsetPercent < 10f -> 500
+                offsetPercent < 13f -> 300
+                offsetPercent < 16f -> 200
+                offsetPercent < 20f -> 100
+                else -> 0
+            }
         }
     }
 }
