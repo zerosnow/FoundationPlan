@@ -21,3 +21,19 @@ $RECYCLE.BIN/
 # =========================
 # Operating System Files
 # =========================
+
+.idea
+local.properties
+*.iml
+.gradle
+.svn
+gradle
+obj
+dep
+*.keystore
+*.hprof
+.DS_Store
+captures/
+gradlew
+gradlew.bat
+gen
