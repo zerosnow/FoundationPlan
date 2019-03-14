@@ -139,6 +139,7 @@ class FoundationPlanPresenter(private val view: IFoundationPlanView) {
         mList.forEach {
             it.offsetPercent = (it.curPrice - it.baseLine) / it.baseLine * 100
         }
+        mList.sortBy { it.offsetPercent }
         view.updateList(mList)
         writeToDisk()
     }

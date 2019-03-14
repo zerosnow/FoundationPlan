@@ -1,12 +1,11 @@
 package com.example.archerlei.foundationplan.main
 
-import android.app.ActionBar
 import android.app.Activity
-import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import com.example.archerlei.foundationplan.R
 import com.example.archerlei.foundationplan.main.adapter.FoundationPlanAdapter
 import com.example.archerlei.foundationplan.main.model.FoundationData
@@ -61,7 +60,6 @@ class MainActivity : Activity() {
         }
         mRecyclerView.setSwipeMenuCreator(swipeMenuCreate)
 
-
         val itemClickListener = SwipeMenuItemClickListener { menuBridge, position ->
             // 任何操作必须先关闭菜单，否则可能出现Item菜单打开状态错乱。
             menuBridge.closeMenu()
@@ -86,6 +84,11 @@ class MainActivity : Activity() {
             val dialog = AddMoreFoundationDialog(this, mFoundationPlanPresenter)
             dialog.setCancelable(true)
             dialog.show()
+        }
+
+        findViewById<TextView>(R.id.update_data).setOnClickListener {
+            Toast.makeText(this@MainActivity, "更新中", Toast.LENGTH_LONG).show()
+            mFoundationPlanPresenter.requestData()
         }
     }
 

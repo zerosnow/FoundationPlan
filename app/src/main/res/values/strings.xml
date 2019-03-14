@@ -2,6 +2,7 @@
     <string name="app_name">定投策略</string>
 
     <string name="add_new_foundation">添加新基金</string>
+    <string name="refresh_data">刷新数据</string>
     <string name="update_range_after_buy">购买后修改所有区间</string>
 
     <string name="please_input_foundation_info">请输入基金信息</string>
