@@ -2,7 +2,9 @@ package com.example.archerlei.foundationplan.main
 
 import android.app.Activity
 import android.os.Bundle
+import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.LinearLayoutManager
+import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
@@ -16,26 +18,31 @@ import com.yanzhenjie.recyclerview.swipe.SwipeMenuCreator
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItemClickListener
-
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : Activity() {
     private lateinit var mRecyclerView: SwipeMenuRecyclerView
     private lateinit var mAdapter: FoundationPlanAdapter
     private lateinit var mFoundationPlanPresenter: FoundationPlanPresenter
+    private lateinit var mDrawLayout: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         mRecyclerView = findViewById(R.id.recycler_view)
-
+        mDrawLayout = findViewById(R.id.drawer_layout)
         mFoundationPlanPresenter = FoundationPlanPresenter(mFoundationPlanView)
         mFoundationPlanPresenter.requestData()
         initEvent()
     }
 
     private fun initEvent() {
+        open_button.setOnClickListener {
+            mDrawLayout.openDrawer(Gravity.START)
+        }
+
         val swipeMenuCreate = SwipeMenuCreator { _, rightMenu, _ ->
             val deleteItem = SwipeMenuItem(this@MainActivity)
             deleteItem.setImage(R.mipmap.icon_delete)
