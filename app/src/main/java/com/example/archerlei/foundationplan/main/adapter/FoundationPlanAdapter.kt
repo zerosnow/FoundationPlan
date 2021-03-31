@@ -2,7 +2,6 @@ package com.example.archerlei.foundationplan.main.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -64,18 +63,25 @@ class FoundationPlanAdapter(val context: Context): RecyclerView.Adapter<Foundati
         private fun getTradingAdvice(offsetPercent: Float):String {
             return if (offsetPercent <= 0f) {
                 "建议购买${getBuyNum(offsetPercent)}元"
+            } else if (offsetPercent >= 30f){
+                "建议卖出${getBuyNum(offsetPercent)}元"
             } else {
-                "建议卖出${getBuyNum(-offsetPercent)}元"
+                "建议观望"
             }
         }
 
         private fun getBuyNum(offsetPercent: Float): Int {
             return when  {
-                offsetPercent < -30f -> 2000
-                offsetPercent < -20f -> 1000
-                offsetPercent < -15f -> 700
-                offsetPercent < -10f -> 500
-                offsetPercent < -5f -> 300
+                offsetPercent < -30f -> 5000
+                offsetPercent < -20f -> 4000
+                offsetPercent < -15f -> 3000
+                offsetPercent < -10f -> 2000
+                offsetPercent <= 0f -> 1000
+                offsetPercent > 70f -> 5000
+                offsetPercent > 60f -> 4000
+                offsetPercent > 50f -> 3000
+                offsetPercent >= 40f -> 2000
+                offsetPercent >= 30f -> 1000
                 else -> 0
             }
         }

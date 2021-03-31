@@ -27,7 +27,13 @@ class FoundationPlanPresenter(private val view: IFoundationPlanView) {
     private val waitCount = AtomicInteger(0)
     init {
         mList.addAll(FoundationUtil.readFoundationList(view.getActivity()))
-
+        //https://docs.qq.com/sheet/DY2x2UlJ3TUVVYU9n?tab=n7coyn 2021/3/31默认值
+        addData("110003", 2.0330f)
+        addData("003986", 1.5934f)
+        addData("000968", 1.0499f)
+        addData("090010", 2.0346f)
+        addData("001551", 0.8175f)
+        addData("007531", 1.5169f)
     }
 
     fun addData(code: String, baseLine: Float) {
@@ -70,7 +76,7 @@ class FoundationPlanPresenter(private val view: IFoundationPlanView) {
 
     @SuppressLint("SimpleDateFormat")
     private fun sendRequest1(id: String) {
-        var url = "http://fundgz.1234567.com.cn/js/_id.js?rt=_timeStamp"
+        var url = "https://fundgz.1234567.com.cn/js/_id.js?rt=_timeStamp"
         val timeStamp = System.currentTimeMillis().toString()
         url = url.replace("_id", id).replace("_timeStamp", timeStamp)
 
