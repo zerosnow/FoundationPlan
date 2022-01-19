@@ -1,7 +1,9 @@
 package com.example.archerlei.foundationplan.main.presenter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import com.android.volley.Response
+import com.example.archerlei.foundationplan.base.Gb2312StringRequest
 import com.example.archerlei.foundationplan.base.Global
 import com.example.archerlei.foundationplan.base.Utf8StringRequest
 import com.example.archerlei.foundationplan.main.FoundationUtil
@@ -9,6 +11,7 @@ import com.example.archerlei.foundationplan.main.model.FoundationData
 import com.example.archerlei.foundationplan.main.view.IFoundationPlanView
 import com.google.gson.Gson
 import java.lang.Exception
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
@@ -20,6 +23,7 @@ import kotlin.collections.ArrayList
  */
 class FoundationPlanPresenter(private val view: IFoundationPlanView) {
     companion object {
+        private const val TAG = "FoundationPlanPresenter"
         private const val DEFAULT_WEEK_RMB = 500
     }
 
@@ -28,13 +32,12 @@ class FoundationPlanPresenter(private val view: IFoundationPlanView) {
     init {
         mList.addAll(FoundationUtil.readFoundationList(view.getActivity()))
         //https://docs.qq.com/sheet/DY2x2UlJ3TUVVYU9n?tab=n7coyn 2021/3/31默认值
-        addData("110003", 2.0330f)
-        addData("003986", 1.5934f)
-        addData("000968", 1.0499f)
-        addData("090010", 2.0346f)
-        addData("001551", 0.8175f)
-        addData("007531", 1.5169f)
-        addData("161723", 1.2630f)
+        addData("110003", 2.0480f)
+        addData("003986", 1.9434f)
+        addData("000968", 1.1226f)
+        addData("090010", 2.4774f)
+        addData("001551", 0.8038f)
+        addData("007531", 1.5324f)
     }
 
     fun addData(code: String, baseLine: Float) {
@@ -136,6 +139,39 @@ class FoundationPlanPresenter(private val view: IFoundationPlanView) {
         Global.mRequestQueue.get(view.getActivity()).add(request)
     }
 
+    fun requestGupiao() {
+        val code = "0000001"
+        val start = "20180501"
+        val end = "20210510"
+        var url = String.format("https://quotes.money.163.com/service/chddata.html?code=%s&start=%s&end=%s", code, start, end)
+        val request = Gb2312StringRequest(url, Response.Listener { response ->
+            val list = response.split("\r\n")
+            val weekList = mutableListOf<ArrayList<Float>>(ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList())
+
+            Log.i(TAG, list[1].split(",")[2])
+            list.forEachIndexed { index, s ->
+                if (index != 0) {
+                    val item = s.split(",")
+                    if (item.isNotEmpty() && item[0].isNotEmpty()) {
+                        val week = dateToWeek(item[0])
+                        if (item.size >= 10 && week < 5) {
+                            weekList[week].add(item[3].toFloat())
+                        } else {
+                            Log.i(TAG, "item error: week = $week,  $s")
+                        }
+                    }
+                }
+            }
+            weekList.forEach {
+                Log.i(TAG, "${it.average()}, ${it.size}")
+            }
+
+        }, Response.ErrorListener {
+            subAndTryUpdateUI()
+        })
+        Global.mRequestQueue.get(view.getActivity()).add(request)
+    }
+
     private fun subAndTryUpdateUI() {
         if (waitCount.decrementAndGet() == 0) {
             calculateAndUpdateUI()
@@ -155,5 +191,16 @@ class FoundationPlanPresenter(private val view: IFoundationPlanView) {
         FoundationUtil.storeFoundationList(view.getActivity(), mList)
     }
 
+    private fun dateToWeek(datetime: String): Int
+    {
+        val f = SimpleDateFormat("yyyy-MM-dd")
+        val cal = Calendar.getInstance () // 获得一个日历
+        try {
+            cal.time = f.parse(datetime)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        return cal.get(Calendar.DAY_OF_WEEK) - 2       //指示一个星期中的某天。
+    }
 
 }

@@ -35,6 +35,7 @@ class MainActivity : Activity() {
         mDrawLayout = findViewById(R.id.drawer_layout)
         mFoundationPlanPresenter = FoundationPlanPresenter(mFoundationPlanView)
         mFoundationPlanPresenter.requestData()
+        mFoundationPlanPresenter.requestGupiao()
         initEvent()
     }
 
