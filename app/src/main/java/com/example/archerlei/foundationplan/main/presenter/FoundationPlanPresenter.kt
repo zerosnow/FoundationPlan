@@ -84,7 +84,7 @@ class FoundationPlanPresenter(private val view: IFoundationPlanView) {
         val timeStamp = System.currentTimeMillis().toString()
         url = url.replace("_id", id).replace("_timeStamp", timeStamp)
 
-        val request = Utf8StringRequest(url, Response.Listener { response ->
+        val request = Utf8StringRequest(url, { response ->
             val json = response.substring(8, response.length - 2)
             val map = Gson().fromJson(json, HashMap<String, String>().javaClass)
             mList.find {it.id == id}?.let {
@@ -102,7 +102,7 @@ class FoundationPlanPresenter(private val view: IFoundationPlanView) {
                 }
                 subAndTryUpdateUI()
             }
-        }, Response.ErrorListener {
+        }, {
             subAndTryUpdateUI()
         })
 
@@ -116,59 +116,29 @@ class FoundationPlanPresenter(private val view: IFoundationPlanView) {
         val date = SimpleDateFormat("yyyyMMdd").format(Date())
         url = url.replace("_id", id).replace("_date", date)
 
-        val request = Utf8StringRequest(url, Response.Listener { response ->
+        val request = Utf8StringRequest(url, { response ->
             val priceTime = try {
                 SimpleDateFormat("yyyyMMdd").parse(response.substring(0, 8)).time + 1000 * 3600 * 24
             } catch (e :Exception) {
                 0L
             }
-            val price = response.substring(9).toFloat()
-            mList.find {it.id == id}?.let {
-                if (priceTime > it.priceTime) {
-                    it.curPrice = price
-                    it.priceTime = priceTime
+            try {
+                val price = response.substring(9).toFloat()
+                mList.find {it.id == id}?.let {
+                    if (priceTime > it.priceTime) {
+                        it.curPrice = price
+                        it.priceTime = priceTime
+                    }
+                    subAndTryUpdateUI()
                 }
-                subAndTryUpdateUI()
-            }
+            } catch (e: Exception) {
 
-        }, Response.ErrorListener {
+            }
+        }, {
             subAndTryUpdateUI()
         })
 
         waitCount.incrementAndGet()
-        Global.mRequestQueue.get(view.getActivity()).add(request)
-    }
-
-    fun requestGupiao() {
-        val code = "0000001"
-        val start = "20180501"
-        val end = "20210510"
-        var url = String.format("https://quotes.money.163.com/service/chddata.html?code=%s&start=%s&end=%s", code, start, end)
-        val request = Gb2312StringRequest(url, Response.Listener { response ->
-            val list = response.split("\r\n")
-            val weekList = mutableListOf<ArrayList<Float>>(ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList())
-
-            Log.i(TAG, list[1].split(",")[2])
-            list.forEachIndexed { index, s ->
-                if (index != 0) {
-                    val item = s.split(",")
-                    if (item.isNotEmpty() && item[0].isNotEmpty()) {
-                        val week = dateToWeek(item[0])
-                        if (item.size >= 10 && week < 5) {
-                            weekList[week].add(item[3].toFloat())
-                        } else {
-                            Log.i(TAG, "item error: week = $week,  $s")
-                        }
-                    }
-                }
-            }
-            weekList.forEach {
-                Log.i(TAG, "${it.average()}, ${it.size}")
-            }
-
-        }, Response.ErrorListener {
-            subAndTryUpdateUI()
-        })
         Global.mRequestQueue.get(view.getActivity()).add(request)
     }
 
@@ -191,8 +161,7 @@ class FoundationPlanPresenter(private val view: IFoundationPlanView) {
         FoundationUtil.storeFoundationList(view.getActivity(), mList)
     }
 
-    private fun dateToWeek(datetime: String): Int
-    {
+    private fun dateToWeek(datetime: String): Int {
         val f = SimpleDateFormat("yyyy-MM-dd")
         val cal = Calendar.getInstance () // 获得一个日历
         try {
@@ -201,6 +170,17 @@ class FoundationPlanPresenter(private val view: IFoundationPlanView) {
             e.printStackTrace()
         }
         return cal.get(Calendar.DAY_OF_WEEK) - 2       //指示一个星期中的某天。
+    }
+
+    private fun dateToMonth(datetime: String): Int {
+        val f = SimpleDateFormat("yyyy-MM-dd")
+        val cal = Calendar.getInstance () // 获得一个日历
+        try {
+            cal.time = f.parse(datetime)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        return cal.get(Calendar.DAY_OF_MONTH)       //指示一个星期中的某天。
     }
 
 }
