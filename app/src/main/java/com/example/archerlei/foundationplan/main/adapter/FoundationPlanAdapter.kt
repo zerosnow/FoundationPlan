@@ -62,9 +62,9 @@ class FoundationPlanAdapter(val context: Context): RecyclerView.Adapter<Foundati
 
         private fun getTradingAdvice(offsetPercent: Float):String {
             return if (offsetPercent <= 0f) {
-                "建议购买${getBuyNum(offsetPercent)}元"
+                "本月建议购买${getBuyNum(offsetPercent)}元"
             } else if (offsetPercent >= 30f){
-                "建议卖出${getBuyNum(offsetPercent)}元"
+                "本月建议卖出${getBuyNum(offsetPercent)}元"
             } else {
                 "建议观望"
             }
@@ -72,16 +72,13 @@ class FoundationPlanAdapter(val context: Context): RecyclerView.Adapter<Foundati
 
         private fun getBuyNum(offsetPercent: Float): Int {
             return when  {
-                offsetPercent < -30f -> 5000
-                offsetPercent < -20f -> 4000
-                offsetPercent < -15f -> 3000
-                offsetPercent < -10f -> 2000
-                offsetPercent <= 0f -> 1000
-                offsetPercent > 70f -> 5000
-                offsetPercent > 60f -> 4000
-                offsetPercent > 50f -> 3000
-                offsetPercent >= 40f -> 2000
-                offsetPercent >= 30f -> 1000
+                offsetPercent < -30f -> 40000
+                offsetPercent < -20f -> 30000
+                offsetPercent < -10f -> 20000
+                offsetPercent < -0f -> 10000
+                offsetPercent > 60f -> 40000
+                offsetPercent > 40f -> 20000
+                offsetPercent >= 20f -> 10000
                 else -> 0
             }
         }
