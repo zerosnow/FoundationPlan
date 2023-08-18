@@ -25,4 +25,9 @@ object FoundationUtil {
         val type = (object :TypeToken<ArrayList<FoundationData>>(){}).type
         return Gson().fromJson(json, type) ?: ArrayList()
     }
+
+    fun clearFoundationList(context: Context) {
+        val sp = context.getSharedPreferences(FOUNDATION_KEY, Context.MODE_PRIVATE)
+        sp.edit().remove(FOUNDATION_KEY).apply()
+    }
 }

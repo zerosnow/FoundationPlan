@@ -34,6 +34,7 @@ class MainActivity : Activity() {
         mRecyclerView = findViewById(R.id.recycler_view)
         mDrawLayout = findViewById(R.id.drawer_layout)
         mFoundationPlanPresenter = FoundationPlanPresenter(mFoundationPlanView)
+        mFoundationPlanPresenter.initData()
         mFoundationPlanPresenter.requestData()
         initEvent()
     }
@@ -96,6 +97,11 @@ class MainActivity : Activity() {
         findViewById<TextView>(R.id.update_data).setOnClickListener {
             Toast.makeText(this@MainActivity, "更新中", Toast.LENGTH_LONG).show()
             mFoundationPlanPresenter.requestData()
+        }
+
+        findViewById<TextView>(R.id.clear_data).setOnClickListener {
+            FoundationUtil.clearFoundationList(this@MainActivity)
+            mFoundationPlanPresenter.initData()
         }
     }
 

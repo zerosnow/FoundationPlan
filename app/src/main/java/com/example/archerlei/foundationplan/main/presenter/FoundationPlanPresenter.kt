@@ -30,19 +30,23 @@ class FoundationPlanPresenter(private val view: IFoundationPlanView) {
     private val mList = ArrayList<FoundationData>()
     private val waitCount = AtomicInteger(0)
     init {
+
+    }
+
+    fun initData() {
         mList.addAll(FoundationUtil.readFoundationList(view.getActivity()))
-        //https://docs.qq.com/sheet/DY2x2UlJ3TUVVYU9n?tab=n7coyn 2021/3/31默认值
+        //https://docs.qq.com/sheet/DY2x2UlJ3TUVVYU9n?tab=n7coyn 2023/8/18默认值
         addData("110003", 1.7f)
         addData("003986", 1.7f)
         addData("090010", 2.1f)
         addData("007531", 1.2f)
-        addData("163406", 1.5f)
-        addData("519697", 4.7f)
-        addData("001717", 3.4f)
+        addData("163406", 1.4f)
+        addData("519697", 4.4f)
+        addData("001717", 3.0f)
         addData("217002", 1.3f)
-        addData("161723", 1.05f)
+        addData("161723", 1.1f)
         addData("160424", 1.45f)
-        addData("005827", 1.8f)
+        addData("005827", 1.9f)
     }
 
     fun addData(code: String, baseLine: Float) {
