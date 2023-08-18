@@ -43,6 +43,7 @@ class FoundationPlanAdapter(val context: Context): RecyclerView.Adapter<Foundati
         private val name = itemView.findViewById<TextView>(R.id.foundation_name)
         private val baseLine = itemView.findViewById<TextView>(R.id.foundation_base_line)
         private val price = itemView.findViewById<TextView>(R.id.foundation_price)
+        private val todayPercent = itemView.findViewById<TextView>(R.id.foundation_today_percent)
         private val offset = itemView.findViewById<TextView>(R.id.foundation_offset)
 
         @SuppressLint("SetTextI18n")
@@ -51,13 +52,15 @@ class FoundationPlanAdapter(val context: Context): RecyclerView.Adapter<Foundati
             name.text = item.name
             baseLine.text = "基准价：${mDefaultDecimalFormat3.format(item.baseLine)}(${getTradingAdvice(item.offsetPercent)})"
             price.text = item.curPrice.toString()
+            todayPercent.text = "(${item.todayPercent}%)"
+            todayPercent.setTextColor(if (item.todayPercent.startsWith("-"))
+                context.resources.getColor(R.color.colorGreen) else context.resources.getColor(R.color.colorRed))
             offset.text = "${mDefaultDecimalFormat2.format(item.offsetPercent)}%"
-            val textColor = when {
+            offset.setTextColor(when {
                 item.offsetPercent > 0f -> context.resources.getColor(R.color.colorRed)
                 item.offsetPercent == 0f -> context.resources.getColor(R.color.colorGray)
                 else -> context.resources.getColor(R.color.colorGreen)
-            }
-            offset.setTextColor(textColor)
+            })
         }
 
         private fun getTradingAdvice(offsetPercent: Float):String {

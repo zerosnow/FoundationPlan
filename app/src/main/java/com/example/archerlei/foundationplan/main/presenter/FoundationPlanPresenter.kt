@@ -100,6 +100,7 @@ class FoundationPlanPresenter(private val view: IFoundationPlanView) {
                 }
 
                 val price = map["gsz"]?.toFloat()?:0f
+                it.todayPercent = map["gszzl"]?:""
                 it.name = map["name"]?:""
                 if (priceTime > it.priceTime) {
                     it.curPrice = price
