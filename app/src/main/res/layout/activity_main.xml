@@ -43,6 +43,20 @@
             tools:ignore="ContentDescription" />
 
         <TextView
+            android:id="@+id/clear_data"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginTop="10dp"
+            android:drawablePadding="6dp"
+            android:drawableLeft="@mipmap/icon_update"
+            android:gravity="center_vertical"
+            android:text="@string/clear_data"
+            android:textSize="18sp"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
             android:id="@+id/add_new_foundation"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -67,20 +81,6 @@
             android:drawableLeft="@mipmap/icon_update"
             android:gravity="center_vertical"
             android:text="@string/refresh_data"
-            android:textSize="18sp"
-            android:textColor="@color/colorBlack" />
-
-        <TextView
-            android:id="@+id/clear_data"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:layout_marginTop="10dp"
-            android:drawablePadding="6dp"
-            android:drawableLeft="@mipmap/icon_update"
-            android:gravity="center_vertical"
-            android:text="@string/clear_data"
             android:textSize="18sp"
             android:textColor="@color/colorBlack" />
     </LinearLayout>
