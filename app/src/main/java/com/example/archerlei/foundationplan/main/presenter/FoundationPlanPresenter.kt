@@ -47,6 +47,8 @@ class FoundationPlanPresenter(private val view: IFoundationPlanView) {
         addData("161723", 1.1f)
         addData("160424", 1.45f)
         addData("005827", 1.9f)
+        addData("012832", 0.5f)
+        addData("008888", 0.8f)
     }
 
     fun addData(code: String, baseLine: Float) {

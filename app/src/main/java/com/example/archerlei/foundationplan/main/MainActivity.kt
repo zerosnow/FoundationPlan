@@ -2,11 +2,9 @@ package com.example.archerlei.foundationplan.main
 
 import android.app.Activity
 import android.os.Bundle
-import android.support.v4.widget.DrawerLayout
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
-import android.view.Gravity
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import com.example.archerlei.foundationplan.R
 import com.example.archerlei.foundationplan.main.adapter.FoundationPlanAdapter
@@ -22,17 +20,18 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : Activity() {
+
+    private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
     private lateinit var mRecyclerView: SwipeMenuRecyclerView
     private lateinit var mAdapter: FoundationPlanAdapter
     private lateinit var mFoundationPlanPresenter: FoundationPlanPresenter
-    private lateinit var mDrawLayout: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        mSwipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)
         mRecyclerView = findViewById(R.id.recycler_view)
-        mDrawLayout = findViewById(R.id.drawer_layout)
         mFoundationPlanPresenter = FoundationPlanPresenter(mFoundationPlanView)
         mFoundationPlanPresenter.initData()
         mFoundationPlanPresenter.requestData()
@@ -40,8 +39,20 @@ class MainActivity : Activity() {
     }
 
     private fun initEvent() {
-        open_button.setOnClickListener {
-            mDrawLayout.openDrawer(Gravity.START)
+        add_button.setOnClickListener {
+            val dialog = AddMoreFoundationDialog(this, mFoundationPlanPresenter)
+            dialog.setCancelable(true)
+            dialog.show()
+        }
+
+        clear_button.setOnClickListener {
+            FoundationUtil.clearFoundationList(this@MainActivity)
+            Toast.makeText(this@MainActivity, "清除中", Toast.LENGTH_LONG).show()
+            mFoundationPlanPresenter.initData()
+        }
+
+        mSwipeRefreshLayout.setOnRefreshListener {
+            mFoundationPlanPresenter.requestData()
         }
 
         val swipeMenuCreate = SwipeMenuCreator { _, rightMenu, _ ->
@@ -87,28 +98,13 @@ class MainActivity : Activity() {
         mRecyclerView.layoutManager = LinearLayoutManager(this)
         mRecyclerView.adapter = mAdapter
 
-
-        findViewById<TextView>(R.id.add_new_foundation).setOnClickListener {
-            val dialog = AddMoreFoundationDialog(this, mFoundationPlanPresenter)
-            dialog.setCancelable(true)
-            dialog.show()
-        }
-
-        findViewById<TextView>(R.id.update_data).setOnClickListener {
-            Toast.makeText(this@MainActivity, "更新中", Toast.LENGTH_LONG).show()
-            mFoundationPlanPresenter.requestData()
-        }
-
-        findViewById<TextView>(R.id.clear_data).setOnClickListener {
-            FoundationUtil.clearFoundationList(this@MainActivity)
-            mFoundationPlanPresenter.initData()
-        }
     }
 
     private val mFoundationPlanView = object :IFoundationPlanView {
         override fun updateList(list: List<FoundationData>) {
             runOnUiThread {
                 mAdapter.updateData(list)
+                mSwipeRefreshLayout.isRefreshing = false
             }
         }
 
