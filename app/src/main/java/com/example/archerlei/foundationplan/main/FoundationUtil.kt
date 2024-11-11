@@ -30,4 +30,23 @@ object FoundationUtil {
         val sp = context.getSharedPreferences(FOUNDATION_KEY, Context.MODE_PRIVATE)
         sp.edit().remove(FOUNDATION_KEY).apply()
     }
+
+    fun getFoundationSimpleName(id: String): String {
+        return when(id) {
+            "519697" -> "交银优势行业"
+            "007531" -> "华宝券商"
+            "160424" -> "华安创业50"
+            "003986" -> "申万中证500"
+            "110003" -> "易方达上证50"
+            "163406" -> "兴全和润"
+            "005827" -> "易方达蓝筹"
+            "090010" -> "中证红利"
+            "161723" -> "中证银行"
+            "012832" -> "新能源etf"
+            "008888" -> "半导体etf"
+            "001717" -> "工银医疗"
+            else -> ""
+        }
+
+    }
 }

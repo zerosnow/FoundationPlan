@@ -23,6 +23,7 @@ $RECYCLE.BIN/
 # =========================
 
 .idea
+build
 local.properties
 *.iml
 .gradle

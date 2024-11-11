@@ -36,17 +36,18 @@ class FoundationPlanPresenter(private val view: IFoundationPlanView) {
     fun initData() {
         mList.addAll(FoundationUtil.readFoundationList(view.getActivity()))
         //https://docs.qq.com/sheet/DY2x2UlJ3TUVVYU9n?tab=n7coyn 2023/8/18默认值
-        addData("110003", 1.7f)
-        addData("003986", 1.7f)
-        addData("090010", 2.1f)
+        addData("163406", 1.45f)
+        addData("519697", 4.0f)
+        addData("160424", 1.3f)
+        addData("003986", 1.6f)
+        addData("005827", 1.7f)
         addData("007531", 1.2f)
-        addData("163406", 1.5f)
-        addData("519697", 4.5f)
         addData("001717", 3.0f)
+        addData("110003", 1.7f)
+        addData("090010", 2.1f)
         addData("217002", 1.3f)
         addData("161723", 1.1f)
-        addData("160424", 1.45f)
-        addData("005827", 1.9f)
+
         addData("012832", 0.5f)
         addData("008888", 0.8f)
     }

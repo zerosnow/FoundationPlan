@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.archerlei.foundationplan.R
+import com.example.archerlei.foundationplan.main.FoundationUtil
 import com.example.archerlei.foundationplan.main.model.FoundationData
 import java.text.DecimalFormat
+import java.util.ArrayList
 
 /**
  * @description todo
@@ -23,6 +25,10 @@ class FoundationPlanAdapter(val context: Context): RecyclerView.Adapter<Foundati
     private val mDefaultDecimalFormat2 = DecimalFormat("0.00")
 
     fun updateData(list: List<FoundationData>) {
+        list.forEach {
+            println("${FoundationUtil.getFoundationSimpleName(it.id)}\t${it.curPrice}\n")
+        }
+
         mList.clear()
         mList.addAll(list)
         notifyDataSetChanged()
